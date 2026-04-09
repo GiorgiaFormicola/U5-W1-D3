@@ -65,20 +65,17 @@ public class MenuItemTests {
 
     @ParameterizedTest
     @DisplayName("Test Pizza constructor with values bigger than zero")
-    @CsvSource({"1, 0, 0, 0", "0, 1, 0, 0", "0, 0, 1, 0", "0, 0, 0, 1"})
+    @CsvSource({"1, 0", "0, 1"})
     public void pizzaConstructorTest2(int calories, double price) {
-        List<Topping> toppingList = new ArrayList<>(List.of( new Topping("onions", 12, 5), new Topping("pepperoni", 10, 2));
-        Pizza pizza = new Pizza(calories, price);
+        List<Topping> toppingList = new ArrayList<>(List.of(new Topping("onions", 12, 5), new Topping("pepperoni", 10, 2)));
+        Pizza pizza = new Pizza(calories, price, toppingList);
         assertNotNull(pizza);
         assertEquals(calories, pizza.getCalories());
         assertEquals(price, pizza.getPrice());
-        assertEquals(volume, pizza.getVolume());
-        assertEquals(alcoholicDegree, pizza.getAlcoholicDegree());
-        assertEquals("pizza", pizza.getName());
-        assertDoesNotThrow(() -> new Pizza("pizza", calories, price, volume, alcoholicDegree));
+        assertEquals("Pizza Margherita", pizza.getName());
+        assertEquals(2, pizza.getToppingsList().size());
+        assertDoesNotThrow(() -> new Pizza(calories, price, toppingList));
     }
-
-
 
 
 }
