@@ -1,6 +1,7 @@
 package GiorgiaFormicola.U5_W1_D3.runners;
 
 import GiorgiaFormicola.U5_W1_D3.entities.*;
+import GiorgiaFormicola.U5_W1_D3.enums.OrderState;
 import GiorgiaFormicola.U5_W1_D3.enums.TableState;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -24,24 +25,59 @@ public class PizzeriaRunner implements CommandLineRunner {
         this.coverCharge = coverCharge;
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        menu.print();
-        List<Table> availableTables = tablesList.stream().filter(table -> table.getMaxCovers() >= 5 && table.getState().equals(TableState.EMPTY)).sorted(Comparator.comparing(Table::getMaxCovers)).toList();
-        if (availableTables.isEmpty()) System.out.println("No tables available for 5 people");
+    public Order acceptNewOrder(int covers, List<MenuItem> orderList) {
+        List<Table> availableTables = tablesList.stream().filter(table -> table.getMaxCovers() >= covers && table.getState().equals(TableState.EMPTY)).sorted(Comparator.comparing(Table::getMaxCovers)).toList();
+        if (availableTables.isEmpty())
+            throw new RuntimeException("\nImpossible to accept the order! No tables available for " + covers + " people!");
         else {
             Table assignedTable = availableTables.getFirst();
-            Pizza customPizza = context.getBean("getMargheritaPizza", Pizza.class);
-            System.out.println(customPizza);
-            customPizza.addTopping(context.getBean("getOnions", Topping.class));
-            customPizza.addTopping(context.getBean("getSalami", Topping.class));
-            customPizza.removeTopping(context.getBean("getTomato", Topping.class));
-            System.out.println(customPizza);
-            System.out.println(customPizza.getExtraToppingsList());
-            List<MenuItem> orderList = new ArrayList<>(List.<MenuItem>of(context.getBean("getMargheritaPizza", Pizza.class), context.getBean("getSalamiPizza", Pizza.class), context.getBean("getWater", Drink.class), customPizza));
-            Order order = new Order(5, assignedTable, orderList);
+            Order order = new Order(covers, assignedTable, orderList);
+            System.out.println("\nNew order for " + covers + " people accepted! Table " + assignedTable.getNumber() + " filled!");
             order.print(coverCharge);
+            assignedTable.changeState();
+            return order;
         }
     }
 
+    public void processOrder(Order order) {
+        order.setOrderState(OrderState.SERVED);
+        order.getTable().changeState();
+        System.out.println("\nOrder number " + order.getNumber() + " processed! Table " + order.getTable().getNumber() + " " + order.getTable().getState().toString().toLowerCase() + "!");
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        menu.print();
+        Pizza customPizza = context.getBean("getMargheritaPizza", Pizza.class);
+        customPizza.addTopping(context.getBean("getOnions", Topping.class));
+        customPizza.addTopping(context.getBean("getSalami", Topping.class));
+        customPizza.removeTopping(context.getBean("getTomato", Topping.class));
+        List<MenuItem> orderList = new ArrayList<>(List.<MenuItem>of(context.getBean("getMargheritaPizza", Pizza.class), context.getBean("getSalamiPizza", Pizza.class), context.getBean("getWater", Drink.class), customPizza));
+
+        Order newOrder = null;
+        try {
+            newOrder = acceptNewOrder(10, orderList);
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            newOrder = acceptNewOrder(10, orderList);
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            processOrder(newOrder);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            newOrder = acceptNewOrder(10, orderList);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
 }

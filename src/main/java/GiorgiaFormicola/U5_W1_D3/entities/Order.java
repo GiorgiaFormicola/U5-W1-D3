@@ -1,7 +1,6 @@
 package GiorgiaFormicola.U5_W1_D3.entities;
 
 import GiorgiaFormicola.U5_W1_D3.enums.OrderState;
-import GiorgiaFormicola.U5_W1_D3.enums.TableState;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,19 +24,13 @@ public class Order {
     private OrderState orderState;
 
     public Order(int covers, Table table, List<MenuItem> orderList) {
-        if (table.getState().equals(TableState.FILLED))
-            throw new RuntimeException("Impossible to assign the order to the desired table. Table already filled.");
-        if (covers > table.getMaxCovers())
-            throw new RuntimeException("Impossible to assign the order to the desired table. Table maximum number of covers lower than " + covers + ".");
-        else {
-            ordersCounter++;
-            this.number = ordersCounter;
-            this.covers = covers;
-            this.table = table;
-            this.captureTime = LocalTime.now();
-            this.orderList = orderList;
-            this.orderState = OrderState.PENDING;
-        }
+        ordersCounter++;
+        this.number = ordersCounter;
+        this.covers = covers;
+        this.table = table;
+        this.captureTime = LocalTime.now();
+        this.orderList = orderList;
+        this.orderState = OrderState.PENDING;
     }
 
     public double getPricesSum() {

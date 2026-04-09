@@ -126,12 +126,12 @@ public class ConfigClass {
     }
 
     @Bean
-    List<Table> getTablesList(List<Table> tablesList) {
+    public List<Table> getTablesList(List<Table> tablesList) {
         return tablesList;
     }
 
     @Bean
-    double getCoverCharge(@Value("${pizzeria.coverCharge}") double coverCharge) {
+    public double getCoverCharge(@Value("${pizzeria.coverCharge}") double coverCharge) {
         return coverCharge;
     }
 
