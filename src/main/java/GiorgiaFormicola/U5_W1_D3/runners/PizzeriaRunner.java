@@ -47,21 +47,26 @@ public class PizzeriaRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("\n" + "-".repeat(27) + " PIZZERIA OPENS " + "-".repeat(27) + "\n");
+
         menu.print();
-        Pizza customPizza = context.getBean("getMargheritaPizza", Pizza.class);
-        customPizza.addTopping(context.getBean("getOnions", Topping.class));
-        customPizza.addTopping(context.getBean("getSalami", Topping.class));
-        customPizza.removeTopping(context.getBean("getTomato", Topping.class));
-        List<MenuItem> orderList = new ArrayList<>(List.<MenuItem>of(context.getBean("getMargheritaPizza", Pizza.class), context.getBean("getSalamiPizza", Pizza.class), context.getBean("getWater", Drink.class), customPizza));
 
         Order newOrder = null;
         try {
+            Pizza customPizza = context.getBean("getMargheritaPizza", Pizza.class);
+            customPizza.addTopping(context.getBean("getOnions", Topping.class));
+            List<MenuItem> orderList = new ArrayList<>(List.<MenuItem>of(context.getBean("getSalamiPizza", Pizza.class), context.getBean("getWine", Drink.class), customPizza, context.getBean("getLemonade", Drink.class)));
             newOrder = acceptNewOrder(10, orderList);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }
 
         try {
+            Pizza customPizza = context.getBean("getMargheritaPizza", Pizza.class);
+            customPizza.addTopping(context.getBean("getOnions", Topping.class));
+            customPizza.addTopping(context.getBean("getSalami", Topping.class));
+            customPizza.removeTopping(context.getBean("getTomato", Topping.class));
+            List<MenuItem> orderList = new ArrayList<>(List.<MenuItem>of(context.getBean("getMargheritaPizza", Pizza.class), context.getBean("getSalamiPizza", Pizza.class), context.getBean("getWater", Drink.class), customPizza));
             newOrder = acceptNewOrder(10, orderList);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
@@ -74,10 +79,16 @@ public class PizzeriaRunner implements CommandLineRunner {
         }
 
         try {
+            Pizza customPizza = context.getBean("getMargheritaPizza", Pizza.class);
+            customPizza.addTopping(context.getBean("getOnions", Topping.class));
+            customPizza.addTopping(context.getBean("getSalami", Topping.class));
+            customPizza.removeTopping(context.getBean("getTomato", Topping.class));
+            List<MenuItem> orderList = new ArrayList<>(List.<MenuItem>of(context.getBean("getMargheritaPizza", Pizza.class), context.getBean("getSalamiPizza", Pizza.class), context.getBean("getWater", Drink.class), customPizza));
             newOrder = acceptNewOrder(10, orderList);
         } catch (RuntimeException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
+        System.out.println("\n" + "-".repeat(26) + " PIZZERIA CLOSES " + "-".repeat(27) + "\n");
     }
 }

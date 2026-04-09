@@ -71,6 +71,7 @@ public class Order {
         System.out.println(" ".repeat(60 - String.format("%.2f", getPricesSum()).length()) + "TOTAL = " + String.format("%.2f", getPricesSum()) + " $");
         System.out.println(" ".repeat(53 - String.valueOf(covers).length() - String.format("%.2f", coverCharge).length()) + "COVER FEE = " + covers + " x " + String.format("%.2f", coverCharge) + " $");
         System.out.println(" ".repeat(48 - String.format("%.2f", getTotalAmount(coverCharge)).length()) + "TOTAL + COVER FEE = " + String.format("%.2f", getTotalAmount(coverCharge)) + " $");
+        System.out.println("\n");
     }
 
 }
