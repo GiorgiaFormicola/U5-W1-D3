@@ -24,7 +24,7 @@ public abstract class MenuItem {
     ;
 
     private String getInfoString() {
-        return calories + "     " + price;
+        return calories + "     " + String.format("%.2f", price);
     }
 
     ;

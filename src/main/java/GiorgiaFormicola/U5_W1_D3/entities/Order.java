@@ -52,32 +52,32 @@ public class Order {
     }
 
     public void print(double coverCharge) {
-        System.out.println("ORDER NUMBER " + number);
+        System.out.println("\nORDER NUMBER " + number);
         System.out.println("Capture Time = " + captureTime);
         System.out.println("Covers = " + covers);
         System.out.println("Table = " + table.getNumber());
         System.out.println("-".repeat(32) + " ORDER " + "-".repeat(31));
-        System.out.println("ITEM" + " ".repeat(70 - "Item".length() - ("Calories    Price").length()) + "CALORIES    PRICE");
+        System.out.println("ITEM" + " ".repeat(70 - "Item".length() - ("Price").length()) + "PRICE");
         getOrderList().forEach(menuItem -> {
-            menuItem.printItem();
+            System.out.println(menuItem.getTitleString() + " ".repeat(68 - menuItem.getTitleString().length() - String.format("%.2f", menuItem.getPrice()).length()) + String.format("%.2f", menuItem.getPrice()) + " $");
             if (menuItem instanceof Pizza) {
                 Pizza pizza = (Pizza) menuItem;
                 if (!pizza.getExtraToppingsList().isEmpty()) {
                     pizza.getExtraToppingsList().forEach(topping -> {
-                        System.out.println("   + " + topping.getName() + " ".repeat(55) + topping.getPrice());
+                        System.out.println("   + " + topping.getName() + " ".repeat(63 - topping.getName().length() - String.format("%.2f", topping.getPrice()).length()) + String.format("%.2f", topping.getPrice()) + " $");
                     });
                 }
                 if (!pizza.getRemovedToppingsList().isEmpty()) {
                     pizza.getRemovedToppingsList().forEach(topping -> {
-                        System.out.println("   - " + topping.getName() + " ".repeat(55) + topping.getPrice());
+                        System.out.println("   - " + topping.getName() + " ".repeat(63 - topping.getName().length() - String.format("%.2f", topping.getPrice()).length()) + String.format("%.2f", topping.getPrice()) + " $");
                     });
                 }
             }
         });
         System.out.println("-".repeat(32) + " BILL " + "-".repeat(32));
-        System.out.println(" ".repeat(55) + "TOTAL = " + getPricesSum() + " $");
-        System.out.println(" ".repeat(49) + "COVER FEE = " + covers + " x " + coverCharge + " $");
-        System.out.println(" ".repeat(43) + "TOTAL + COVER FEE = " + getTotalAmount(coverCharge) + " $");
+        System.out.println(" ".repeat(60 - String.format("%.2f", getPricesSum()).length()) + "TOTAL = " + String.format("%.2f", getPricesSum()) + " $");
+        System.out.println(" ".repeat(53 - String.valueOf(covers).length() - String.format("%.2f", coverCharge).length()) + "COVER FEE = " + covers + " x " + String.format("%.2f", coverCharge) + " $");
+        System.out.println(" ".repeat(48 - String.format("%.2f", getTotalAmount(coverCharge)).length()) + "TOTAL + COVER FEE = " + String.format("%.2f", getTotalAmount(coverCharge)) + " $");
     }
 
 }

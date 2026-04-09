@@ -34,7 +34,7 @@ public class ConfigClass {
 
     @Bean
     public Topping getTomato() {
-        return new Topping("tomato", 20, 0);
+        return new Topping("tomato", 20, 0.00);
     }
 
     @Bean
