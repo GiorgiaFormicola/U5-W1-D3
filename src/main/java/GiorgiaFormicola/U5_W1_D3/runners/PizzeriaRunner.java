@@ -70,7 +70,7 @@ public class PizzeriaRunner implements CommandLineRunner {
         try {
             processOrder(newOrder);
         } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Impossible to process the order! Order not found.");
         }
 
         try {
