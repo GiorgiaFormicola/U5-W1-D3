@@ -11,8 +11,12 @@ public class Drink extends MenuItem {
 
     public Drink(String name, int calories, double price, double volume, double alcoholicDegree) {
         super(name, calories, price);
-        this.volume = volume;
-        this.alcoholicDegree = alcoholicDegree;
+        if (volume < 0 || alcoholicDegree < 0)
+            throw new IllegalArgumentException("Volume and alcoholic degree values must be bigger or equal to 0.");
+        else {
+            this.volume = volume;
+            this.alcoholicDegree = alcoholicDegree;
+        }
     }
 
     protected String getDrinkInfoString() {

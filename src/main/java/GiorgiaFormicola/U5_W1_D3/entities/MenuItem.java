@@ -1,10 +1,9 @@
 package GiorgiaFormicola.U5_W1_D3.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
+/*@AllArgsConstructor*/
 @Getter
 @Setter
 public abstract class MenuItem {
@@ -13,8 +12,22 @@ public abstract class MenuItem {
     private double price;
 
     public MenuItem(int calories, double price) {
-        this.calories = calories;
-        this.price = price;
+        if (calories < 0 || price < 0)
+            throw new IllegalArgumentException("Calories and price values must be bigger or equal to 0.");
+        else {
+            this.calories = calories;
+            this.price = price;
+        }
+    }
+
+    public MenuItem(String name, int calories, double price) {
+        if (calories < 0 || price < 0)
+            throw new IllegalArgumentException("Calories and price values must be bigger or equal to 0.");
+        else {
+            this.name = name;
+            this.calories = calories;
+            this.price = price;
+        }
     }
 
     protected String getTitleString() {
